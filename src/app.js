@@ -2,20 +2,24 @@ const express = require("express");
 
 const app=express();
 
-//Request Handler function
-//Routing 
-// -Sequence matters
-// -string matching 
-
-// app.use("/",(req,res)=>{
-//     res.send("Hello");
-// })
-
-// app.use("/user",(req,res)=>{
-//     res.send("Hello user");
-// })
-
 app.get("/user",(req,res)=>{
+    res.send({"firstName":"Laxman","LastName":"Sahoo"});
+})
+
+//Rejex 
+app.get(/a/,(req,res)=>{
+    res.send({"firstName":"Laxman","LastName":"Sahoo"});
+})
+
+//Dynamic Routes 
+app.get("/user",(req,res)=>{
+    //use to get the dynamic user id from the routes
+    console.log(req.query);
+    res.send({"firstName":"Laxman","LastName":"Sahoo"});
+})
+
+app.get("/user/:userid",(req,res)=>{
+    console.log(req.params);
     res.send({"firstName":"Laxman","LastName":"Sahoo"});
 })
 
