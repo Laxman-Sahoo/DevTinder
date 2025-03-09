@@ -2,38 +2,23 @@ const express = require("express");
 
 const app = express();
 
-const {adminAuth,userAuth} = require("./middlewares/auth")
-
-/*
-app.use(
-    "/user",
-    (req, res, next) => {
-        // res.send("Response 1");
-        next();
+//Method-1 
+app.get("/getUserData", (req, res) => {
+    try {
+        throw new Error("sdnqjdnoq");
+        res.send("User Data Sent");
     }
-);
-app.use(
-    "/user",
-    (req, res, next) => {
-        res.send("Response 2");
+    catch (err) {
+        res.status(500).send("Something Went Wrong");
     }
-);
+});
 
-*/
-
-//MiddleWare - Instead of code for authorizing in each API call write in the middleware
-app.use("/admin",adminAuth);
-//NO need to authorize here now
-app.get("/admin/getAllData", (req,res,next) => {
-    res.send("All Data Sent");
-})
-app.get("/admin/deleteUser", (req,res,next) => {
-    res.send("deleted");
-})
-
-//UserAuth
-app.get("/user",userAuth,(req,res)=>{
-    res.send("User Data Sent");
+//Method-2(Always write in the end of the code)
+app.use("/", (err, req, res, next) => {
+    if (err) {
+        // console.log(err);
+        res.status(500).send("Something Went Wrong");
+    }
 });
 
 app.listen(3000, () => {
