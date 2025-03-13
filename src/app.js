@@ -2,7 +2,7 @@ const express = require("express");
 const connectDB = require("./config/database");
 const app = express();
 const User = require("./models/user");
-require('dotenv').config();
+require("dotenv").config();
 
 app.use(express.json());
 
@@ -14,7 +14,7 @@ app.post("/signup", async (req, res) => {
     await user.save();
     res.send("User added successfully");
   } catch (err) {
-    res.status(400).send("Error saving the user");
+    res.status(400).send("Error saving the user " + err.message);
   }
 });
 
@@ -22,9 +22,38 @@ app.post("/signup", async (req, res) => {
 app.get("/feed", async (req, res) => {
   try {
     const users = await User.find({});
-    res.send(users); 
+    res.send(users);
   } catch (err) {
     res.status(400).send("Something went Wrong");
+  }
+});
+
+//delete a user from the database
+app.delete("/user", async (req, res) => {
+  const userId = req.body.userId;
+  try {
+    const user = await User.findOneAndDelete({ _id: userId });
+    if (user == null) {
+      res.send("User not found");
+    } else {
+      res.send("User deleted Successfully");
+    }
+  } catch (err) {
+    res.status(400).send("Something went Wrong");
+  }
+});
+
+//updating a user
+app.patch("/user", async (req, res) => {
+  const userId = req.body.userId;
+  const data = req.body;
+  try {
+    await User.findByIdAndUpdate({ _id: userId }, data, {
+      runValidators: true,
+    });
+    res.send("User updated Successfully");
+  } catch (err) {
+    res.status(400).send("Update failed " + err.message);
   }
 });
 
