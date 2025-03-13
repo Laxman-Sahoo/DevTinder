@@ -1,10 +1,8 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-//Good practice to write like this 
-const connectDB = async()=>{
-    await mongoose.connect(
-        "mongodb+srv://laxman8210sahoo:Laxman123@namastenode.9m5ud.mongodb.net/devTinder"
-    );
-}
+//Good practice to write like this
+const connectDB = async () => {
+  await mongoose.connect(process.env.MONGO_KEY);
+};
 
 module.exports = connectDB;
